@@ -47,7 +47,7 @@ def test_stkpush_process_request(app: App, access_token: str) -> None:
         pass_key=env["PASS_KEY"],
     )
     # print(result)
-    assert result.response.status_code == 200 and result.checkout_request_id
+    assert result.response.status_code == 200 and result.response_code == "0"
 
 
 def test_stkpush_query(app: App, access_token: str) -> None:
@@ -58,7 +58,7 @@ def test_stkpush_query(app: App, access_token: str) -> None:
         pass_key=env["PASS_KEY"],
     )
     # print(result)
-    assert result.response.status_code == 200 and result.checkout_request_id
+    assert result.response.status_code == 200 and result.response_code == "0"
 
 
 def test_c2b_register_url(app: App, access_token: str) -> None:
