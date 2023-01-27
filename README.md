@@ -2,7 +2,7 @@
 
 A wrapper library for the Daraja Mpesa API
 
-[![Language](https://img.shields.io/badge/language-python-green.svg)](https://github.com/enwawerueli/daraja-connect)
+[![Language](https://img.shields.io/badge/language-python-green.svg)](https://python.org)
 
 ## Features
 
