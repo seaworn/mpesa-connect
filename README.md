@@ -2,7 +2,7 @@
 
 A wrapper library for the Daraja Mpesa API
 
-[![Language](https://img.shields.io/badge/language-python-green.svg)](https://github.com/sartim/mpesa-sdk)
+[![Language](https://img.shields.io/badge/language-python-green.svg)](https://github.com/enwawerueli/daraja_connect)
 
 ## Features
 
@@ -57,7 +57,7 @@ Generate an authorization token.
 from daraja_connect import Authorization
 
 auth = Authorization(app)
-access_token = auth.generate_token()
+access_token = auth.generate_token().access_token
 ```
 *You can attach this token to the service instance or include it as an argument to the api methods calls*
 
@@ -96,7 +96,7 @@ from django_connect.utils import generate_password
 password = generate_password(
     business_short_code=<business_short_code>,
     pass_key=<pass_key>,
-    timestamp=<timestamp>
+    timestamp=<timestamp>,
 )
 ```
 Alternatively, you can include the `pass_key` argument in place of `password` to auto generate the password
@@ -199,4 +199,4 @@ Please make sure to update tests as appropriate.
 
 ## License
 
-[MIT](https://github.com/enwawerueli/daraja-connect/blob/master/LICENSE)
+[MIT](https://github.com/enwawerueli/daraja-connect/blob/main/LICENSE)
