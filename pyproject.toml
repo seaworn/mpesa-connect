@@ -2,12 +2,24 @@
 name = "daraja-connect"
 version = "0.1.0"
 description = "A wrapper library for the Daraja Mpesa API"
-authors = ["enwawerueli <seaworndrift@gmail.com>"]
+authors = ["Emz D <seaworndrift@gmail.com>"]
+homepage = "https://github.com/enwawerueli/daraja-connect"
+repository = "https://github.com/enwawerueli/daraja-connect"
 license = "MIT"
-readme = "README.md, LICENSE"
+readme = "README.md"
 packages = [
     {include = "daraja_connect", from = "src"},
     {include = "test", format = "sdist"}
+]
+include = [
+    {path = "LICENSE"},
+    {path = ".env.example", format = "sdist"}
+]
+keywords = ["daraja", "mpesa", "payment"]
+classifiers = [
+    "Programming Language :: Python",
+    "Operating System :: OS Independent",
+    "License :: OSI Approved :: MIT License",
 ]
 
 [tool.poetry.dependencies]

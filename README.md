@@ -19,7 +19,7 @@ A wrapper library for the Daraja Mpesa API
 
 ## Installation
 
-    $ pip install daraja_connect
+    $ pip install daraja-connect
 
 ## Running Tests
 
@@ -37,7 +37,7 @@ Create `.env` file from [.env.example](https://github.com/enwawerueli/daraja-con
 
 ## Usage
 
-*NOTE: Before you start, make sure to go through the official Daraja Mpesa API [docs](https://developer.safaricom.co.ke/Documentation)* 
+*NOTE: Before you start, make sure to go through the official Daraja Mpesa API [documentation](https://developer.safaricom.co.ke/Documentation)* 
 
 Create an app instance. 
 
@@ -91,7 +91,7 @@ result = stk.query(
 You can use the `generate_password` helper to create a password
 
 ```python
-from django_connect.utils import generate_password
+from daraja_connect.utils import generate_password
 
 password = generate_password(
     business_short_code=<business_short_code>,
@@ -105,8 +105,8 @@ Alternatively, you can include the `pass_key` argument in place of `password` to
 
 **Register URL**
 ```python
-from django_connect import C2B
-from django_connect.enums import ResponseType
+from daraja_connect import C2B
+from daraja_connect.enums import ResponseType
 
 c2b = C2B(app, access_token=access_token)
 result = c2b.register_url(
@@ -131,8 +131,8 @@ result = c2b.simulate(
 ### Business To Customer (B2C) API
 
 ```python
-from django_connect import B2C
-from django_connect.enums import TransactionType
+from daraja_connect import B2C
+from daraja_connect.enums import TransactionType
 
 b2c = B2C(app, access_token=access_token)
 result = b2c.payment_request(
@@ -152,8 +152,8 @@ result = b2c.payment_request(
 ### Account Balance API
 
 ```python
-from django_connect import AccountBalance
-from django_connect.enums import TransactionType, IdentifierType
+from daraja_connect import AccountBalance
+from daraja_connect.enums import TransactionType, IdentifierType
 
 ab = AccountBalance(app, access_token=access_token)
 result = ab.query(
@@ -171,8 +171,8 @@ result = ab.query(
 ### Transaction Status API
 
 ```python
-from django_connect import TransactionStatus
-from django_connect.enums import TransactionType, IdentifierType
+from daraja_connect import TransactionStatus
+from daraja_connect.enums import TransactionType, IdentifierType
 
 ts = TransactionStatus(app, access_token=access_token)
 result = ts.query(
