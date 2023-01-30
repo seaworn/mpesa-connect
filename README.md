@@ -21,20 +21,6 @@ A wrapper library for the Daraja Mpesa API
 
     $ pip install daraja-connect
 
-## Running Tests
-
-Install dependencies
-
-    $ poetry install
-
-Create `.env` file from [.env.example](https://github.com/enwawerueli/daraja-connect/blob/main/.env.example) then edit it to add your app credentials and test parameters
-
-    $ cp .env.example .env
-
- Run tests
-
-    $ poetry run pytest
-
 ## Usage
 
 *NOTE: Before you start, make sure to go through the official Daraja Mpesa API [documentation](https://developer.safaricom.co.ke/Documentation)* 
@@ -45,10 +31,10 @@ Create an app instance.
 from daraja_connect import App
 
 # Sandbox
-app = App.create_sandbox(consumer_key=<key>, consumer_secret=<secret>)
+app = App.create_sandbox(consumer_key=..., consumer_secret=...)
 
 # Production
-app = App.create_production(consumer_key=<key>, consumer_secret=<secret>)
+app = App.create_production(consumer_key=..., consumer_secret=...)
 ```
 
 Generate an authorization token.
@@ -57,7 +43,8 @@ Generate an authorization token.
 from daraja_connect import Authorization
 
 auth = Authorization(app)
-access_token = auth.generate_token().access_token
+result = auth.generate_token()
+access_token = result.access_token
 ```
 *You can attach this token to the service instance or include it as an argument to the api methods calls*
 
@@ -69,23 +56,23 @@ from daraja_connect import STKPush
 
 stk = STKPush(app, access_token=access_token)
 result = stk.process_request(
-    business_short_code=<business_short_code>,
-    phone_number=<phone_number>,
-    amount=<amount>,
-    call_back_url=<call_back_url>,
-    account_reference=<account_reference>,
-    transaction_desc=<transaction_desc>,
-    password=<password>,
-    timestamp=<timestamp>,
+    business_short_code=...,
+    phone_number=...,
+    amount=...,
+    call_back_url=...,
+    account_reference=...,
+    transaction_desc=...,
+    password=...,
+    timestamp=...,
 )
 ```
 
 **Query**
 ```python
 result = stk.query(
-    business_short_code=<business_short_code>,
-    checkout_request_id=<checkout_request_id>,
-    password=<password>,
+    business_short_code=...,
+    checkout_request_id=...,
+    password=...,
 )
 ```
 You can use the `generate_password` helper to create a password
@@ -94,9 +81,9 @@ You can use the `generate_password` helper to create a password
 from daraja_connect.utils import generate_password
 
 password = generate_password(
-    business_short_code=<business_short_code>,
-    pass_key=<pass_key>,
-    timestamp=<timestamp>,
+    business_short_code=....,
+    pass_key=...,
+    timestamp=...,
 )
 ```
 Alternatively, you can include the `pass_key` argument in place of `password` to auto generate the password
@@ -110,9 +97,9 @@ from daraja_connect.enums import ResponseType
 
 c2b = C2B(app, access_token=access_token)
 result = c2b.register_url(
-    short_code=<short_code>,
-    validation_url=<validation_url>,
-    confirmation_url=<confirmation_url>,
+    short_code=...,
+    validation_url=...,
+    confirmation_url=...,
     response_type=ResponseType.COMPLETED,
 )
 ```
@@ -120,11 +107,11 @@ result = c2b.register_url(
 **Simulate**
 ```python
 result = c2b.simulate(
-    short_code=<short_code>,
+    short_code=...,
     command_id=TransactionType.CUSTOMER_PAY_BILL_ONLINE,
-    amount=<amount>,
-    msisdn=<msisdn>,
-    bill_ref_number=<bill_ref_number>,
+    amount=...,
+    msisdn=...,
+    bill_ref_number=...,
 )
 ```
 
@@ -136,16 +123,16 @@ from daraja_connect.enums import TransactionType
 
 b2c = B2C(app, access_token=access_token)
 result = b2c.payment_request(
-    initiator_name=<initiator_name>,
-    security_credential=<security_credential>,
-    amount=<amount>,
+    initiator_name=...,
+    security_credential=...,
+    amount=...,
     command_id=TransactionType.BUSINESS_PAYMENT,
-    party_a=<party_a>,
-    party_b=<party_b>,
-    queue_time_out_url=<queue_time_out_url>,
-    result_url=<result_url>,
-    remarks=<remarks>,
-    occassion=<occassion>,
+    party_a=...,
+    party_b=...,
+    queue_time_out_url=...,
+    result_url=...,
+    remarks=...,
+    occassion=...,
 )
 ```
 
@@ -157,14 +144,14 @@ from daraja_connect.enums import TransactionType, IdentifierType
 
 ab = AccountBalance(app, access_token=access_token)
 result = ab.query(
-    initiator=<initiator>,
-    security_credential=<security_credential>,
+    initiator=...,
+    security_credential=...,
     command_id=TransactionType.ACCOUNT_BALANCE,
     identifier_type=IdentifierType.ORGANIZATION_SHORT_CODE,
-    party_a=<party_a>,
-    queue_time_out_url=<queue_time_out_url>,
-    result_url=<result_url>,
-    remarks=<remarks>,
+    party_a=...,
+    queue_time_out_url=...,
+    result_url=...,
+    remarks=...,
 )
 ```
 
@@ -176,20 +163,34 @@ from daraja_connect.enums import TransactionType, IdentifierType
 
 ts = TransactionStatus(app, access_token=access_token)
 result = ts.query(
-    initiator=<initiator>,
-    security_credential=<security_credential>,
-    transaction_id=<transaction_id>,
+    initiator=...,
+    security_credential=...,
+    transaction_id=...,
     command_id=TransactionType.TRANSACTION_STATUS_QUERY,
     identifier_type=IdentifierType.ORGANIZATION_SHORT_CODE,
-    party_a=<party_a>,
-    queue_time_out_url=<queue_time_out_url>,
-    result_url=<result_url>,
-    remarks=<remarks>,
-    occassion=<occassion>,
+    party_a=...,
+    queue_time_out_url=...,
+    result_url=...,
+    remarks=...,
+    occassion=...,
 )
 ```
 
-All API methods return a result object with a response property which is a `requests.Response` object and various properties corresponding to the json body of the response
+All API methods return a result object with a response property which is a [`requests.Response`](https://requests.readthedocs.io/en/latest/api/#requests.Response) object and various properties corresponding to the json body of the response
+
+## Running Tests
+
+Install dependencies
+
+    $ poetry install
+
+Create `.env` file from [.env.example](https://github.com/enwawerueli/daraja-connect/blob/main/.env.example) then edit it to add your app credentials and test parameters
+
+    $ cp .env.example .env
+
+ Run tests
+
+    $ poetry run pytest
 
 ## Contributing
 
