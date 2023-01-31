@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "daraja-connect"
-version = "0.1.0"
+version = "0.1.0b2"
 description = "A wrapper library for the Daraja Mpesa API"
 authors = ["Emz D <seaworndrift@gmail.com>"]
 homepage = "https://github.com/enwawerueli/daraja-connect"
