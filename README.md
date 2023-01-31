@@ -192,12 +192,6 @@ Create `.env` file from [.env.example](https://github.com/enwawerueli/daraja-con
 
     $ poetry run pytest
 
-## Contributing
-
-Pull requests are welcome. For major changes, please open an issue first to discuss the change.
-
-Please make sure to update tests as appropriate.
-
 ## License
 
 [MIT](https://github.com/enwawerueli/daraja-connect/blob/main/LICENSE)
