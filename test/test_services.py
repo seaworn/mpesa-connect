@@ -2,7 +2,7 @@ import pytest
 from typing import cast
 from dotenv import dotenv_values
 
-from daraja_connect import (
+from mpesa_connect import (
     App,
     Authorization,
     STKPush,
@@ -11,7 +11,7 @@ from daraja_connect import (
     AccountBalance,
     TransactionStatus,
 )
-from daraja_connect.enums import ResponseType, TransactionType, IdentifierType
+from mpesa_connect.enums import ResponseType, TransactionType, IdentifierType
 
 env = dotenv_values()
 

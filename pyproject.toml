@@ -1,14 +1,14 @@
 [tool.poetry]
-name = "daraja-connect"
-version = "0.1.0b2"
+name = "mpesa-connect"
+version = "0.1.0"
 description = "A wrapper library for the Daraja Mpesa API"
 authors = ["Emz D <seaworndrift@gmail.com>"]
-homepage = "https://github.com/enwawerueli/daraja-connect"
-repository = "https://github.com/enwawerueli/daraja-connect"
+homepage = "https://github.com/enwawerueli/mpesa-connect"
+repository = "https://github.com/enwawerueli/mpesa-connect"
 license = "MIT"
 readme = "README.md"
 packages = [
-    {include = "daraja_connect", from = "src"},
+    {include = "mpesa_connect", from = "src"},
     {include = "test", format = "sdist"}
 ]
 include = [

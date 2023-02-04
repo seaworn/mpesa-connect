@@ -1,7 +1,7 @@
 import re
 import pytest
 
-from daraja_connect.utils import str_now, snake_case
+from mpesa_connect.utils import str_now, snake_case
 
 
 def test_str_now() -> None:

@@ -1,4 +1,4 @@
-# DARAJA CONNECT
+# MPESA CONNECT
 
 A wrapper library for the Daraja Mpesa API
 
@@ -19,7 +19,7 @@ A wrapper library for the Daraja Mpesa API
 
 ## Installation
 
-    $ pip install daraja-connect
+    $ pip install mpesa-connect
 
 ## Usage
 
@@ -28,7 +28,7 @@ A wrapper library for the Daraja Mpesa API
 Create an app instance. 
 
 ```python
-from daraja_connect import App
+from mpesa_connect import App
 
 # Sandbox
 app = App.create_sandbox(consumer_key=..., consumer_secret=...)
@@ -40,7 +40,7 @@ app = App.create_production(consumer_key=..., consumer_secret=...)
 Generate an authorization token.
 
 ```python
-from daraja_connect import Authorization
+from mpesa_connect import Authorization
 
 auth = Authorization(app)
 result = auth.generate_token()
@@ -52,7 +52,7 @@ access_token = result.access_token
 
 **STK Push**
 ```python
-from daraja_connect import STKPush
+from mpesa_connect import STKPush
 
 stk = STKPush(app, access_token=access_token)
 result = stk.process_request(
@@ -78,7 +78,7 @@ result = stk.query(
 You can use the `generate_password` helper to create a password
 
 ```python
-from daraja_connect.utils import generate_password
+from mpesa_connect.utils import generate_password
 
 password = generate_password(
     business_short_code=....,
@@ -92,8 +92,8 @@ Alternatively, you can include the `pass_key` argument in place of `password` to
 
 **Register URL**
 ```python
-from daraja_connect import C2B
-from daraja_connect.enums import ResponseType
+from mpesa_connect import C2B
+from mpesa_connect.enums import ResponseType, TransactionType
 
 c2b = C2B(app, access_token=access_token)
 result = c2b.register_url(
@@ -118,8 +118,8 @@ result = c2b.simulate(
 ### Business To Customer (B2C) API
 
 ```python
-from daraja_connect import B2C
-from daraja_connect.enums import TransactionType
+from mpesa_connect import B2C
+from mpesa_connect.enums import TransactionType
 
 b2c = B2C(app, access_token=access_token)
 result = b2c.payment_request(
@@ -139,8 +139,8 @@ result = b2c.payment_request(
 ### Account Balance API
 
 ```python
-from daraja_connect import AccountBalance
-from daraja_connect.enums import TransactionType, IdentifierType
+from mpesa_connect import AccountBalance
+from mpesa_connect.enums import TransactionType, IdentifierType
 
 ab = AccountBalance(app, access_token=access_token)
 result = ab.query(
@@ -158,8 +158,8 @@ result = ab.query(
 ### Transaction Status API
 
 ```python
-from daraja_connect import TransactionStatus
-from daraja_connect.enums import TransactionType, IdentifierType
+from mpesa_connect import TransactionStatus
+from mpesa_connect.enums import TransactionType, IdentifierType
 
 ts = TransactionStatus(app, access_token=access_token)
 result = ts.query(
@@ -176,7 +176,7 @@ result = ts.query(
 )
 ```
 
-All API methods return a result object with a response property which is a [`requests.Response`](https://requests.readthedocs.io/en/latest/api/#requests.Response) object and various properties corresponding to the json body of the response
+All API methods return a result object with a `response` property which is a [`requests.Response`](https://requests.readthedocs.io/en/latest/api/#requests.Response) object and other various properties corresponding to the json body of the response
 
 ## Running Tests
 
@@ -184,7 +184,7 @@ Install dependencies
 
     $ poetry install
 
-Create `.env` file from [.env.example](https://github.com/enwawerueli/daraja-connect/blob/main/.env.example) then edit it to add your app credentials and test parameters
+Create `.env` file from [.env.example](https://github.com/enwawerueli/mpesa-connect/blob/main/.env.example) then edit it to add your app credentials and test parameters
 
     $ cp .env.example .env
 
@@ -194,4 +194,4 @@ Create `.env` file from [.env.example](https://github.com/enwawerueli/daraja-con
 
 ## License
 
-[MIT](https://github.com/enwawerueli/daraja-connect/blob/main/LICENSE)
+[MIT](https://github.com/enwawerueli/mpesa-connect/blob/main/LICENSE)
