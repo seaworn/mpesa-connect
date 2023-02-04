@@ -64,6 +64,7 @@ result = stk.process_request(
     transaction_desc=...,
     password=...,
     timestamp=...,
+    # access_token=access_token
 )
 ```
 
@@ -176,7 +177,7 @@ result = ts.query(
 )
 ```
 
-All API methods return a result object with a `response` property which is a [`requests.Response`](https://requests.readthedocs.io/en/latest/api/#requests.Response) object and other various properties corresponding to the json body of the response
+All API methods return a result object with a `response` property which is a [`requests.Response`](https://requests.readthedocs.io/en/latest/api/#requests.Response) object, plus various properties corresponding to the json body of the response
 
 ## Running Tests
 
