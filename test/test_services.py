@@ -1,5 +1,6 @@
-import pytest
 from typing import cast
+
+import pytest
 from dotenv import dotenv_values
 
 from mpesa_connect import (
