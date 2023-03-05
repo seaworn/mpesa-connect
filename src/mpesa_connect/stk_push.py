@@ -19,7 +19,9 @@ class STKPush(Service):
         call_back_url: str,
         account_reference: str,
         transaction_desc: str,
-        transaction_type: Optional[Union[TransactionType, str]] = None,
+        transaction_type: Union[
+            TransactionType, str
+        ] = TransactionType.CUSTOMER_PAY_BILL_ONLINE,
         party_a: Optional[str] = None,
         party_b: Optional[str] = None,
         password: Optional[str] = None,
@@ -37,8 +39,9 @@ class STKPush(Service):
             "BusinessShortCode": business_short_code,
             "Password": password,
             "Timestamp": timestamp,
-            "TransactionType": transaction_type
-            or TransactionType.CUSTOMER_PAY_BILL_ONLINE.value,
+            "TransactionType": transaction_type.value
+            if isinstance(transaction_type, TransactionType)
+            else transaction_type,
             "Amount": amount,
             "PartyA": party_a or phone_number,
             "PartyB": party_b or business_short_code,
