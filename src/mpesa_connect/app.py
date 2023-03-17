@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Union
 from enum import Enum
 
 from .urls import DOMAIN_PRODUCTION, DOMAIN_SANDBOX
@@ -13,11 +13,11 @@ class App:
     def __init__(
         self,
         *,
-        domain: AppDomain,
+        domain: Union[AppDomain, str],
         consumer_key: str,
         consumer_secret: str,
     ) -> None:
-        self.domain = domain
+        self.domain = AppDomain[domain.upper()] if isinstance(domain, str) else domain
         self.consumer_key = consumer_key
         self.consumer_secret = consumer_secret
 
