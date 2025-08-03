@@ -2,8 +2,11 @@ from enum import Enum
 
 
 class TransactionType(Enum):
-    CUSTOMER_PAY_BILL_ONLINE = "CustomerPayBillOnline"
     CUSTOMER_BUY_GOODS_ONLINE = "CustomerBuyGoodsOnline"
+    CUSTOMER_PAY_BILL_ONLINE = "CustomerPayBillOnline"
+
+
+class CommandID(Enum):
     BUSINESS_PAYMENT = "BusinessPayment"
     SALARY_PAYMENT = "SalaryPayment"
     PROMOTION_PAYMENT = "PromotionPayment"

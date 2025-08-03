@@ -2,7 +2,7 @@ import re
 
 import pytest
 
-from mpesa_connect.utils import str_now, snake_case
+from mpesa_connect.utils import convert_to_snake_case, str_now
 
 
 def test_str_now() -> None:
@@ -20,4 +20,4 @@ def test_str_now() -> None:
     ],
 )
 def test_snake_case(input: str, output: str) -> None:
-    assert snake_case(input) == output
+    assert convert_to_snake_case(input) == output

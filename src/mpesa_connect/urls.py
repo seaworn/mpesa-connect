@@ -1,8 +1,8 @@
 from typing import Final
 
-DOMAIN_SANDBOX: Final[str] = "https://sandbox.safaricom.co.ke"
-DOMAIN_PRODUCTION: Final[str] = "https://api.safaricom.co.ke"
-PATH_OAUTH_GENERATE: Final[str] = "/oauth/v1/generate?grant_type=client_credentials"
+SANDBOX_URL: Final[str] = "https://sandbox.safaricom.co.ke"
+LIVE_URL: Final[str] = "https://api.safaricom.co.ke"
+PATH_OAUTH_GENERATE: Final[str] = "/oauth/v1/generate"
 PATH_STKPUSH_PROCESSREQUEST: Final[str] = "/mpesa/stkpush/v1/processrequest"
 PATH_STKPUSHQUERY_QUERY: Final[str] = "/mpesa/stkpushquery/v1/query"
 PATH_C2B_REGISTERURL: Final[str] = "/mpesa/c2b/v1/registerurl"

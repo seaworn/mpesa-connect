@@ -1,34 +1,34 @@
-from typing import Any, Union
 from enum import Enum
+from typing import Any, Literal, Union
 
-from .urls import DOMAIN_PRODUCTION, DOMAIN_SANDBOX
+from .urls import LIVE_URL, SANDBOX_URL
 
 
-class AppDomain(Enum):
-    SANDBOX = DOMAIN_SANDBOX
-    PRODUCTION = DOMAIN_PRODUCTION
+class AppEnv(Enum):
+    LIVE = LIVE_URL
+    SANDBOX = SANDBOX_URL
 
 
 class App:
     def __init__(
         self,
         *,
-        domain: Union[AppDomain, str],
+        env: Union[AppEnv, Literal["sandbox", "live"]],
         consumer_key: str,
         consumer_secret: str,
     ) -> None:
-        self.domain = AppDomain[domain.upper()] if isinstance(domain, str) else domain
+        self.env = AppEnv[env.upper()] if isinstance(env, str) else env
         self.consumer_key = consumer_key
         self.consumer_secret = consumer_secret
 
     @property
-    def base_url(self) -> str:
-        return self.domain.value
+    def base_url(self):
+        return self.env.value
 
     @classmethod
     def create_sandbox(cls, **kwargs: Any) -> "App":
-        return cls(domain=AppDomain.SANDBOX, **kwargs)
+        return cls(env=AppEnv.SANDBOX, **kwargs)
 
     @classmethod
-    def create_production(cls, **kwargs: Any) -> "App":
-        return cls(domain=AppDomain.PRODUCTION, **kwargs)
+    def create_live(cls, **kwargs: Any) -> "App":
+        return cls(env=AppEnv.LIVE, **kwargs)

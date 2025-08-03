@@ -1,24 +1,36 @@
-from typing import Any
-from urllib.parse import urljoin
+from dataclasses import dataclass
+from typing import Union
 
 import requests
+from requests.auth import HTTPBasicAuth
 
 from .app import App
-from .base import Service
+from .base import API, ErrorResult, Result
 from .urls import PATH_OAUTH_GENERATE
-from .utils import base64encode
 
 
-class Authorization(Service):
+@dataclass
+class OAuthResult(Result):
+    access_token: str
+    expires_in: str
+
+
+@dataclass
+class OAuthErrorResult(ErrorResult):
+    pass
+
+
+class OAuth(API):
     def __init__(self, app: App, /):
         self.app = app
 
-    def generate_token(self) -> Any:
-        credentials = base64encode(
-            f"{self.app.consumer_key}:{self.app.consumer_secret}"
-        )
+    def generate(self) -> Union[OAuthResult, OAuthErrorResult]:
         response = requests.get(
-            urljoin(self.app.base_url, PATH_OAUTH_GENERATE),
-            headers={"Authorization": f"Basic {credentials}"},
+            self.get_url(PATH_OAUTH_GENERATE),
+            {"grant_type": "client_credentials"},
+            auth=HTTPBasicAuth(self.app.consumer_key, self.app.consumer_secret),
         )
-        return self._make_result(response)
+        result_dict = self._make_result(response)
+        if response.status_code != 200:
+            return OAuthErrorResult(**result_dict)
+        return OAuthResult(**result_dict)

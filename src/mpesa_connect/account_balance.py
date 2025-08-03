@@ -1,44 +1,62 @@
-from typing import Any, Union, Optional
-from urllib.parse import urljoin
+from dataclasses import dataclass
+from typing import Optional, Union
 
 import requests
 
-from .base import Service
-from .enums import TransactionType, IdentifierType
+from .base import API, ErrorResult, Result
+from .enums import CommandID, IdentifierType
 from .urls import PATH_ACCOUNTBALANCE_QUERY
 
 
-class AccountBalance(Service):
+@dataclass
+class AccountBalanceResult(Result):
+    originator_conversation_id: str
+    conversation_id: str
+    response_code: str
+    response_description: str
+
+
+@dataclass
+class AccountBalanceErrorResult(ErrorResult):
+    pass
+
+
+class AccountBalance(API):
     def query(
         self,
         *,
         initiator: str,
         security_credential: str,
-        identifier_type: Union[IdentifierType, int],
-        party_a: int,
+        identifier_type: Union[IdentifierType, str, int],
+        party_a: Union[str, int],
         remarks: str,
         queue_time_out_url: str,
         result_url: str,
-        command_id: Union[TransactionType, str] = TransactionType.ACCOUNT_BALANCE,
+        command_id: Union[CommandID, str] = CommandID.ACCOUNT_BALANCE,
         access_token: Optional[str] = None,
-    ) -> Any:
+    ) -> Union[AccountBalanceResult, AccountBalanceErrorResult]:
         payload = {
             "Initiator": initiator,
             "SecurityCredential": security_credential,
-            "CommandID": command_id.value
-            if isinstance(command_id, TransactionType)
-            else command_id,
+            "CommandID": (
+                command_id.value if isinstance(command_id, CommandID) else command_id
+            ),
             "PartyA": party_a,
-            "IdentifierType": identifier_type.value
-            if isinstance(identifier_type, IdentifierType)
-            else identifier_type,
+            "IdentifierType": (
+                identifier_type.value
+                if isinstance(identifier_type, IdentifierType)
+                else identifier_type
+            ),
             "Remarks": remarks,
             "QueueTimeOutURL": queue_time_out_url,
             "ResultURL": result_url,
         }
         response = requests.post(
-            urljoin(self.app.base_url, PATH_ACCOUNTBALANCE_QUERY),
-            json=payload,
+            self.get_url(PATH_ACCOUNTBALANCE_QUERY),
             headers={"Authorization": f"Bearer {access_token or self.access_token}"},
+            json=payload,
         )
-        return self._make_result(response)
+        result_dict = self._make_result(response)
+        if response.status_code != 200:
+            return AccountBalanceErrorResult(**result_dict)
+        return AccountBalanceResult(**result_dict)

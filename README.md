@@ -28,49 +28,48 @@ A wrapper library for the Daraja Mpesa API
 Create an app instance. 
 
 ```python
-from mpesa_connect import App
+from mpesa_connect import App, AppEnv
 
-# Sandbox
-app = App.create_sandbox(consumer_key=..., consumer_secret=...)
-
-# Production
-app = App.create_production(consumer_key=..., consumer_secret=...)
+app = App(env=AppEnv.SANDBOX, consumer_key=..., consumer_secret=...)
 ```
+
+### Authorization
 
 Generate an authorization token.
 
 ```python
-from mpesa_connect import Authorization
+from mpesa_connect import OAuth
 
-auth = Authorization(app)
-result = auth.generate_token()
-access_token = result.access_token
+oauth = OAuth(app)
+result = oauth.generate()
+if result.status_ok:
+    access_token = result.access_token
 ```
-*You can attach this token to the service instance or include it as an argument to the api methods calls*
+*You can attach this token to the api instance or include it as an argument to the api method call*
 
 ### Mpesa Express
 
-**STK Push**
+#### STK Push
 ```python
-from mpesa_connect import STKPush
+from mpesa_connect import STKPush, TransactionType
 
-stk = STKPush(app, access_token=access_token)
-result = stk.process_request(
+stkpush = STKPush(app, access_token="your access token")
+result = stkpush.process_request(
     business_short_code=...,
     phone_number=...,
     amount=...,
     call_back_url=...,
     account_reference=...,
     transaction_desc=...,
+    transaction_type=TransactionType.CUSTOMER_PAY_BILL_ONLINE
     password=...,
     timestamp=...,
-    # access_token=access_token
 )
 ```
 
-**Query**
+#### STK Push Query
 ```python
-result = stk.query(
+result = stkpush.query(
     business_short_code=...,
     checkout_request_id=...,
     password=...,
@@ -89,14 +88,13 @@ password = generate_password(
 ```
 Alternatively, you can include the `pass_key` argument in place of `password` to auto generate the password
 
-### Customer To Business (C2B) API
+### Customer To Business (C2B)
 
-**Register URL**
+#### Register URL
 ```python
-from mpesa_connect import C2B
-from mpesa_connect.enums import ResponseType, TransactionType
+from mpesa_connect import C2B, CommandID, ResponseType, TransactionType
 
-c2b = C2B(app, access_token=access_token)
+c2b = C2B(app, access_token="your access token")
 result = c2b.register_url(
     short_code=...,
     validation_url=...,
@@ -105,29 +103,18 @@ result = c2b.register_url(
 )
 ```
 
-**Simulate**
-```python
-result = c2b.simulate(
-    short_code=...,
-    command_id=TransactionType.CUSTOMER_PAY_BILL_ONLINE,
-    amount=...,
-    msisdn=...,
-    bill_ref_number=...,
-)
-```
-
-### Business To Customer (B2C) API
+### Business To Customer (B2C)
 
 ```python
-from mpesa_connect import B2C
-from mpesa_connect.enums import TransactionType
+from mpesa_connect import B2C, CommandID
 
-b2c = B2C(app, access_token=access_token)
+b2c = B2C(app, access_token="your access token")
 result = b2c.payment_request(
+    originator_conversation_id=...,
     initiator_name=...,
     security_credential=...,
     amount=...,
-    command_id=TransactionType.BUSINESS_PAYMENT,
+    command_id=CommandID.BUSINESS_PAYMENT,
     party_a=...,
     party_b=...,
     queue_time_out_url=...,
@@ -137,17 +124,16 @@ result = b2c.payment_request(
 )
 ```
 
-### Account Balance API
+### Account Balance
 
 ```python
-from mpesa_connect import AccountBalance
-from mpesa_connect.enums import TransactionType, IdentifierType
+from mpesa_connect import AccountBalance, CommandID, IdentifierType
 
-ab = AccountBalance(app, access_token=access_token)
-result = ab.query(
+bal = AccountBalance(app, access_token="your access token")
+result = bal.query(
     initiator=...,
     security_credential=...,
-    command_id=TransactionType.ACCOUNT_BALANCE,
+    command_id=CommandID.ACCOUNT_BALANCE,
     identifier_type=IdentifierType.ORGANIZATION_SHORT_CODE,
     party_a=...,
     queue_time_out_url=...,
@@ -156,18 +142,17 @@ result = ab.query(
 )
 ```
 
-### Transaction Status API
+### Transaction Status
 
 ```python
-from mpesa_connect import TransactionStatus
-from mpesa_connect.enums import TransactionType, IdentifierType
+from mpesa_connect import TransactionStatus, CommandID, IdentifierType
 
-ts = TransactionStatus(app, access_token=access_token)
-result = ts.query(
+status = TransactionStatus(app, access_token="your access token")
+result = status.query(
     initiator=...,
     security_credential=...,
     transaction_id=...,
-    command_id=TransactionType.TRANSACTION_STATUS_QUERY,
+    command_id=CommandID.TRANSACTION_STATUS_QUERY,
     identifier_type=IdentifierType.ORGANIZATION_SHORT_CODE,
     party_a=...,
     queue_time_out_url=...,
@@ -177,17 +162,17 @@ result = ts.query(
 )
 ```
 
-All API methods return a result object with a `response` property which is a [`requests.Response`](https://requests.readthedocs.io/en/latest/api/#requests.Response) object, plus various properties corresponding to the json body of the response
+All API methods return either a `*Result` or `*ErrorResult` object based on whether the request was successful or not.
+
+The result object has a `response` property which is a [`requests.Response`](https://requests.readthedocs.io/en/latest/api/#requests.Response) object, plus various other properties corresponding to the json body of the response. 
+
+The result also has a `status_ok` property which you can use to discriminate between success and error results.
 
 ## Running Tests
 
 Install dependencies
 
     $ poetry install
-
-Create `.env` file from [.env.example](https://github.com/enwawerueli/mpesa-connect/blob/main/.env.example) then edit it to add your app credentials and test parameters
-
-    $ cp .env.example .env
 
  Run tests
 

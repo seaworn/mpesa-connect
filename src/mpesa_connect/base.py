@@ -1,13 +1,32 @@
-from typing import Any, Optional, Tuple, List, Dict
-from dataclasses import make_dataclass
+import logging
+from dataclasses import dataclass
+from typing import Any, Dict, Literal, Optional
+from urllib.parse import urljoin
 
-from requests import Response
+import requests
 
 from .app import App
-from .utils import snake_case
+from .utils import convert_to_snake_case
+
+_logger = logging.getLogger(__name__)
 
 
-class Service:
+@dataclass
+class Result:
+    response: requests.Response
+    status_ok: Literal[True]
+
+
+@dataclass
+class ErrorResult:
+    response: requests.Response
+    status_ok: Literal[False]
+    request_id: str
+    error_code: str
+    error_message: str
+
+
+class API:
     def __init__(
         self,
         app: App,
@@ -18,42 +37,16 @@ class Service:
         self.app = app
         self.access_token = access_token
 
-    def _make_result(self, response: Response) -> Any:
-        fields: List[Tuple[str, Any]] = [("response", Response)]
-        kwargs: Dict[str, Any] = {"response": response}
+    def get_url(self, path: str) -> str:
+        return urljoin(self.app.base_url, path)
+
+    def _make_result(self, response: requests.Response) -> Dict[str, Any]:
         try:
-            for k, v in response.json().items():
-                k = snake_case(k)
-                fields.append((k, type(v)))
-                kwargs[k] = v
-        except Exception as e:
-            fields.append(("error", Exception))
-            kwargs["error"] = e
-        return make_dataclass(f"{self.__class__.__name__}Result", fields)(**kwargs)
-
-        # TResult = TypeVar("TResult", bound="Result")
-
-        # @dataclass
-        # class Result:
-        #     response: Response
-
-        #     @classmethod
-        #     def from_response(
-        #         cls: Type[TResult],
-        #         response: Response,
-        #         *,
-        #         property_mapper: Optional[Callable[[str], str]] = None,
-        #     ) -> TResult:
-        #         try:
-        #             data = response.json()
-        #         except JSONDecodeError:
-        #             return cls(response)
-        #         kwargs = {}
-        #         for field in fields(cls)[1:]:
-        #             mapped_name = (
-        #                 field.metadata.get("mapped_name")
-        #                 or (callable(property_mapper) and property_mapper(field.name))
-        #                 or field.name
-        #             )
-        #             kwargs[field.name] = data.get(mapped_name)
-        # return cls(response, **kwargs)
+            json = response.json()
+        except requests.JSONDecodeError as e:
+            _logger.error(str(e))
+            raise e
+        result = {convert_to_snake_case(k): v for k, v in json.items()}
+        result["response"] = response
+        result["status_ok"] = response.status_code == 200
+        return result
