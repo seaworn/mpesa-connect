@@ -7,6 +7,7 @@ A wrapper library for the Daraja Mpesa API
 ## Features
 
 - Authorization
+- Dynamic QR
 - Mpesa Express
   - STK Push
   - Query
@@ -46,6 +47,21 @@ if result.status_ok:
     access_token = result.access_token
 ```
 *You can attach this token to the api instance or include it as an argument to the api method call*
+
+### Dynamic QR
+```python
+from mpesa_connect import QRCode, TrxCode
+
+qrcode = QRCode(app, access_token="your access token")
+result = qrcode.generate(
+    merchant_name=...,
+    ref_no=...,
+    amount=...,
+    trx_code=TrxCode.BG,
+    cpi=...,
+    size=...,
+)
+```
 
 ### Mpesa Express
 

@@ -23,3 +23,11 @@ class IdentifierType(Enum):
     MSISDN = 1
     TILL_NUMBER = 2
     ORGANIZATION_SHORT_CODE = 4
+
+
+class TrxCode(Enum):
+    BG = "BG"
+    PB = "PB"
+    SB = "SB"
+    SM = "SM"
+    WA = "WA"

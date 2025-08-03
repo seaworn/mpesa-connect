@@ -15,7 +15,8 @@ from .c2b import (
     C2BSimulateErrorResult,
     C2BSimulateResult,
 )
-from .enums import CommandID, IdentifierType, ResponseType, TransactionType
+from .enums import CommandID, IdentifierType, ResponseType, TransactionType, TrxCode
+from .qrcode import QRCode, QRCodeErrorResult, QRCodeResult
 from .stkpush import (
     STKPush,
     STKPushErrorResult,
@@ -48,6 +49,9 @@ __all__: List[str] = [
     "OAuth",
     "OAuthResult",
     "OAuthErrorResult",
+    "QRCode",
+    "QRCodeResult",
+    "QRCodeErrorResult",
     "ResponseType",
     "STKPush",
     "STKPushErrorResult",
@@ -58,4 +62,5 @@ __all__: List[str] = [
     "TransactionStatusResult",
     "TransactionStatusErrorResult",
     "TransactionType",
+    "TrxCode",
 ]
