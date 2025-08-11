@@ -17,6 +17,8 @@ from mpesa_connect import (
     QRCode,
     QRCodeResult,
     ResponseType,
+    Reversal,
+    ReversalResult,
     STKPush,
     STKPushQueryResult,
     STKPushResult,
@@ -293,4 +295,40 @@ def test_qrcode_generate(app: App) -> None:
         response_code="00",
         response_description="QR Code Successfully Generated.",
         qr_code="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",
+    )
+
+
+@responses.activate
+def test_reversal_request(app: App) -> None:
+    responses.post(
+        f"{SANDBOX_URL}/mpesa/reversal/v1/request",
+        json={
+            "OriginatorConversationID": "4943-4a92-8a23-82170f05ce2d45619",
+            "ConversationID": "AG_20250811_010010651f2kfyahuotp",
+            "ResponseCode": "0",
+            "ResponseDescription": "Accept the service request successfully.",
+        },
+        status=200,
+    )
+    result = Reversal(app).request(
+        initiator="Test",
+        security_credential="mgbt/8bLe0Z3LjztRQ8JO961vKC/id78IME+R+VhUis0PNsoOIt+B242AUUKwvZA5uNiyqnGsJ2KSpgRf6KV6/dBBs1nugvHMIb+dzHkuFL7jJ8turT/k1ekZNW20G15h1tFR9LpWY52kCgtElIZ1/W828MvX3dfmuvDP8b8JrB1LKCvSMIX2DohhL5BnvcG7q91JnRStB+hiko9M0w83lL/RfcXCwP8goJCGgIydtXrj3T/gAdHRCqMLUuRQmWI3xzMMWBO21jSBLS8vjTQeHyvuQZpIGqxTJ6r4jlcgXh8i7oL7BszqPdPg1d2WO6s2kOe3MN+6b6Xs8o8QCFOqQ==",
+        command_id=CommandID.TRANSACTION_REVERSAL,
+        transaction_id="LKXXXX1234",
+        amount="1",
+        receiver_party="600610",
+        receiver_identifier_type="11",
+        result_url="https://mydomain.com/Reversal/result",
+        queue_time_out_url="https://mydomain.com/Reversal/queue",
+        remarks="Test Remarks",
+        occasion="",
+    )
+    assert result.response.status_code == 200
+    assert result == ReversalResult(
+        response=result.response,
+        status_ok=True,
+        originator_conversation_id="4943-4a92-8a23-82170f05ce2d45619",
+        conversation_id="AG_20250811_010010651f2kfyahuotp",
+        response_code="0",
+        response_description="Accept the service request successfully.",
     )

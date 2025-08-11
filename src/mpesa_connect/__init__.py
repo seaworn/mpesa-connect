@@ -17,6 +17,7 @@ from .c2b import (
 )
 from .enums import CommandID, IdentifierType, ResponseType, TransactionType, TrxCode
 from .qrcode import QRCode, QRCodeErrorResult, QRCodeResult
+from .reversal import Reversal, ReversalErrorResult, ReversalResult
 from .stkpush import (
     STKPush,
     STKPushErrorResult,
@@ -53,6 +54,9 @@ __all__: List[str] = [
     "QRCodeResult",
     "QRCodeErrorResult",
     "ResponseType",
+    "Reversal",
+    "ReversalResult",
+    "ReversalErrorResult",
     "STKPush",
     "STKPushErrorResult",
     "STKPushQueryErrorResult",

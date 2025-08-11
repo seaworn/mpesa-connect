@@ -12,6 +12,7 @@ class CommandID(Enum):
     PROMOTION_PAYMENT = "PromotionPayment"
     ACCOUNT_BALANCE = "AccountBalance"
     TRANSACTION_STATUS_QUERY = "TransactionStatusQuery"
+    TRANSACTION_REVERSAL = "TransactionReversal"
 
 
 class ResponseType(Enum):

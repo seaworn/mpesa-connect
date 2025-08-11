@@ -17,6 +17,7 @@ A wrapper library for the Daraja Mpesa API
 - Business To Customer (B2C)
 - Account Balance
 - Transaction Status
+- Reversal
 
 ## Installation
 
@@ -176,6 +177,27 @@ result = status.query(
     remarks=...,
     occassion=...,
 )
+```
+
+### Reversal
+
+```python
+from mpesa_connect import Reversal, CommandID
+
+reversal = Reversal(app, access_token="your access token")
+result = reversal.request(
+        initiator=...,
+        security_credential=...,
+        command_id=CommandID.TRANSACTION_REVERSAL,
+        transaction_id=...,
+        amount=...,
+        receiver_party=...
+        receiver_identifier_type=...,
+        result_url=...,
+        queue_time_out_url=...
+        remarks=...,
+        occasion=...,
+    )
 ```
 
 All API methods return either a `*Result` or `*ErrorResult` object based on whether the request was successful or not.
