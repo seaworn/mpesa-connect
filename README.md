@@ -37,7 +37,7 @@ app = App(env=AppEnv.SANDBOX, consumer_key=..., consumer_secret=...)
 
 ### Authorization
 
-Generate an authorization token.
+Generate an access token.
 
 ```python
 from mpesa_connect import OAuth
@@ -109,7 +109,7 @@ Alternatively, you can include the `pass_key` argument in place of `password` to
 
 #### Register URL
 ```python
-from mpesa_connect import C2B, CommandID, ResponseType, TransactionType
+from mpesa_connect import C2B, CommandID, ResponseType
 
 c2b = C2B(app, access_token="your access token")
 result = c2b.register_url(
@@ -202,7 +202,7 @@ result = reversal.request(
 
 All API methods return either a `*Result` or `*ErrorResult` object based on whether the request was successful or not.
 
-The result object has a `response` property which is a [`requests.Response`](https://requests.readthedocs.io/en/latest/api/#requests.Response) object, plus various other properties corresponding to the json body of the response. 
+The result object has a `response` property which is the raw [`requests.Response`](https://requests.readthedocs.io/en/latest/api/#requests.Response) object, plus various other properties corresponding to the json body of the response. 
 
 The result also has a `status_ok` property which you can use to discriminate between success and error results.
 
